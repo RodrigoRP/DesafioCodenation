@@ -51,7 +51,10 @@ public class Send_HTTP_Request2 {
 		int NumeroCasas = myResponse.getInt("numero_casas");
 		String token = myResponse.getString("token");
 		String cifrado = myResponse.getString("cifrado");
-		SaidaPopularJSON(NumeroCasas, token, cifrado, resposta);
+		ResumoCriptografico rc = new ResumoCriptografico();
+		String resultadoResumo = rc.criptografarMD5(resposta);
+		
+		SaidaPopularJSON(NumeroCasas, token, cifrado, resposta, resultadoResumo);
 
 		// JSONObject myResponse2 = new JSONObject(resposta);
 		System.out.println(resposta);
@@ -59,13 +62,17 @@ public class Send_HTTP_Request2 {
 
 	}
 
-	private static void SaidaPopularJSON(int numeroCasas, String token, String cifrado, String resposta) throws JSONException {
+	private static void SaidaPopularJSON(int numeroCasas, String token, String cifrado, String resposta, String resultadoResumo) throws JSONException {
 		
 		JSONObject my_obj = new JSONObject();
 		my_obj.put("numero_casas", numeroCasas);
 		my_obj.put("token", token);
 		my_obj.put("cifrado", cifrado);
 		my_obj.put("decifrado", resposta);
+		my_obj.put("resumo_criptografico", resultadoResumo);
+		my_obj.put("resumo_criptografico", "");
+		//my_obj.put("token", token);
+		
 		salvarArquivo(my_obj);
 		
 	}
@@ -77,7 +84,7 @@ public class Send_HTTP_Request2 {
 		FileWriter writeFile = null;
 
 		try {
-			writeFile = new FileWriter("saida.json");
+			writeFile = new FileWriter("answer.json");
 			// Escreve no arquivo conteudo do Objeto JSON
 			writeFile.write(myResult.toString());
 			writeFile.close();
@@ -93,8 +100,7 @@ public class Send_HTTP_Request2 {
 		String cifrado = myResponse.getString("cifrado");
 		int nroCasas = myResponse.getInt("numero_casas");
 		String resposta2 = dc.criptografar(cifrado, nroCasas);
-		// ftq bdanxqy iuft fdagnxqetaafuzs ue ftmf fdagnxq etaafe nmow. gzwzaiz mgftad
-
+		
 		return resposta2;
 	}
 }
