@@ -31,8 +31,8 @@ public class Send_HTTP_Request2 {
 		con.setRequestProperty("User-Agent", "Mozilla/5.0");
 
 		int responseCode = con.getResponseCode();
-		// System.out.println("\nSending 'GET' request to URL : " + url);
-		// System.out.println("Response Code : " + responseCode);
+		System.out.println("\nSending 'GET' request to URL : " + url);
+		System.out.println("Response Code : " + responseCode);
 
 		BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
 		String inputLine;
@@ -43,7 +43,8 @@ public class Send_HTTP_Request2 {
 		}
 		in.close();
 		// print in String
-		// System.out.println(response.toString());
+		System.out.println(response.toString());
+		
 		// Read JSON response and print
 		JSONObject myResponse = new JSONObject(response.toString());
 
@@ -53,28 +54,29 @@ public class Send_HTTP_Request2 {
 		String cifrado = myResponse.getString("cifrado");
 		ResumoCriptografico rc = new ResumoCriptografico();
 		String resultadoResumo = rc.criptografarMD5(resposta);
-		
+
 		SaidaPopularJSON(NumeroCasas, token, cifrado, resposta, resultadoResumo);
 
-		// JSONObject myResponse2 = new JSONObject(resposta);
+		
 		System.out.println(resposta);
-		// salvarArquivo(myResponse2);
+		
 
 	}
 
-	private static void SaidaPopularJSON(int numeroCasas, String token, String cifrado, String resposta, String resultadoResumo) throws JSONException {
-		
+	private static void SaidaPopularJSON(int numeroCasas, String token, String cifrado, String resposta,
+			String resultadoResumo) throws JSONException {
+
 		JSONObject my_obj = new JSONObject();
 		my_obj.put("numero_casas", numeroCasas);
 		my_obj.put("token", token);
 		my_obj.put("cifrado", cifrado);
 		my_obj.put("decifrado", resposta);
 		my_obj.put("resumo_criptografico", resultadoResumo);
+
 		
-		//my_obj.put("token", token);
-		
+
 		salvarArquivo(my_obj);
-		
+
 	}
 
 	private static void salvarArquivo(JSONObject myResponse) throws JSONException {
@@ -100,8 +102,8 @@ public class Send_HTTP_Request2 {
 		String cifrado = myResponse.getString("cifrado");
 		int nroCasas = myResponse.getInt("numero_casas");
 		System.out.println(cifrado);
-		String resposta2 = dc.criptografar(cifrado, 12);
-		
+		String resposta2 = dc.criptografar(cifrado, nroCasas);
+
 		return resposta2;
 	}
 }
