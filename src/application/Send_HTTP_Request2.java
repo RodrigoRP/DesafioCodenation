@@ -102,6 +102,7 @@ public class Send_HTTP_Request2 {
 		String cifrado = myResponse.getString("cifrado");
 		int nroCasas = myResponse.getInt("numero_casas");
 		System.out.println(cifrado);
+		System.out.println("");
 		String resposta2 = dc.criptografar(cifrado, nroCasas);
 
 		return resposta2;
