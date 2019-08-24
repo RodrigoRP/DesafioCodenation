@@ -70,7 +70,7 @@ public class Send_HTTP_Request2 {
 		my_obj.put("cifrado", cifrado);
 		my_obj.put("decifrado", resposta);
 		my_obj.put("resumo_criptografico", resultadoResumo);
-		my_obj.put("resumo_criptografico", "");
+		
 		//my_obj.put("token", token);
 		
 		salvarArquivo(my_obj);
