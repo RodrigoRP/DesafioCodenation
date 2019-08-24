@@ -99,7 +99,8 @@ public class Send_HTTP_Request2 {
 		Decifrar dc = new Decifrar();
 		String cifrado = myResponse.getString("cifrado");
 		int nroCasas = myResponse.getInt("numero_casas");
-		String resposta2 = dc.criptografar(cifrado, nroCasas);
+		System.out.println(cifrado);
+		String resposta2 = dc.criptografar(cifrado, 12);
 		
 		return resposta2;
 	}

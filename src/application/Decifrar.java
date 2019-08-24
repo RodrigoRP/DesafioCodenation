@@ -16,10 +16,13 @@ public class Decifrar {
 			char alpha = newMessage.charAt(j - 1);
 			char beta = 0;			
 	        boolean b1 = Character.isDigit(alpha); 
-	        int ascii = (int) alpha + nroCasas;
+	        int ascii = (int) alpha - nroCasas;
 	       
 	        while (ascii > 122) {
 	        	ascii = ((ascii - 122) + 96);
+	        }
+	        while (ascii < 97) {
+	        	ascii = ((ascii + 122) - 96);
 	        }
 			
 			if(b1) sb2.insert(0, alpha);
@@ -45,7 +48,7 @@ public class Decifrar {
 					sb2.insert(0, (char) ((ascii)  ));
 				}
 			}
-			else if(alpha == 'z') sb2.insert(0, (char) ((122 - 26)  +  nroCasas ));
+			else if(alpha == 'z') sb2.insert(0, (char) ((nroCasas + ascii - 24)  +  nroCasas ));
 			//else if(alpha >= 0 || alpha <= 9)sb2.insert(0, alpha);
 			
 	
