@@ -12,79 +12,89 @@ import org.json.JSONObject;
 
 public class Send_HTTP_Request2 {
 	public static void main(String[] args) {
-     try {
-         Send_HTTP_Request2.call_me();
-        } catch (Exception e) {
-         e.printStackTrace();
-       }
-     }
-	   
-public static void call_me() throws Exception {
-     String url = "https://api.codenation.dev/v1/challenge/dev-ps/generate-data?token=d519fcd95f419217e64cd5dca131972033e300d8";
-     URL obj = new URL(url);
-     HttpURLConnection con = (HttpURLConnection) obj.openConnection();
-     // optional default is GET
-     con.setRequestMethod("GET");
-     //add request header
-     con.setRequestProperty("User-Agent", "Mozilla/5.0");
-     int responseCode = con.getResponseCode();
-     //System.out.println("\nSending 'GET' request to URL : " + url);
-     //System.out.println("Response Code : " + responseCode);
-     BufferedReader in = new BufferedReader(
-             new InputStreamReader(con.getInputStream()));
-     String inputLine;
-     StringBuffer response = new StringBuffer();
-     while ((inputLine = in.readLine()) != null) {
-     	response.append(inputLine);
-     }
-     in.close();
-     //print in String
-     //System.out.println(response.toString());
-     //Read JSON response and print
-     JSONObject myResponse = new JSONObject(response.toString());
-     
-		/*
-		 * System.out.println("")
-		 * System.out.println("result after Reading JSON Response");
-		 * System.out.println("numero_casas: "+myResponse.getInt("numero_casas"));
-		 * System.out.println("token: "+myResponse.getString("token"));
-		 * System.out.println("cifrado: "+myResponse.getString("cifrado"));
-		 * System.out.println("decifrado: "+myResponse.getString("decifrado"));
-		 * System.out.println("resumo_criptografico: "+myResponse.getString(
-		 * "resumo_criptografico"));
-		 */
-     
-     String resposta = decifrar(myResponse);
-     System.out.println(resposta);
-     salvarArquivo(myResponse);
+		try {
+			Send_HTTP_Request2.call_me();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
-   }
+	public static void call_me() throws Exception {
+		String url = "https://api.codenation.dev/v1/challenge/dev-ps/generate-data?token=d519fcd95f419217e64cd5dca131972033e300d8";
+		URL obj = new URL(url);
+		HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 
-private static void salvarArquivo(JSONObject myResponse) {
+		// optional default is GET
+		con.setRequestMethod("GET");
 
-	/* SALVAR ARQUIVO */
-	FileWriter writeFile = null;
-	
-    try{
-        writeFile = new FileWriter("saida.json");
-        //Escreve no arquivo conteudo do Objeto JSON
-        writeFile.write(myResponse.toString());
-        writeFile.close();
-    }
-    catch(IOException e){
-        e.printStackTrace();
-    }
-	
-}
+		// add request header
+		con.setRequestProperty("User-Agent", "Mozilla/5.0");
 
-private static String decifrar(JSONObject myResponse) throws JSONException {
-	
-	Decifrar dc = new Decifrar();
-	String cifrado = myResponse.getString("cifrado");
-	int nroCasas = myResponse.getInt("numero_casas");
-	String resposta2 = dc.criptografar("ftq bdanxqy iuft fdagnxqetaafuzs ue ftmf fdagnxq etaafe nmow. gzwzaiz mgftad", 20);
-	//ftq bdanxqy iuft fdagnxqetaafuzs ue ftmf fdagnxq etaafe nmow. gzwzaiz mgftad
+		int responseCode = con.getResponseCode();
+		// System.out.println("\nSending 'GET' request to URL : " + url);
+		// System.out.println("Response Code : " + responseCode);
 
-	return resposta2;
-}
+		BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+		String inputLine;
+		StringBuffer response = new StringBuffer();
+
+		while ((inputLine = in.readLine()) != null) {
+			response.append(inputLine);
+		}
+		in.close();
+		// print in String
+		// System.out.println(response.toString());
+		// Read JSON response and print
+		JSONObject myResponse = new JSONObject(response.toString());
+
+		String resposta = decifrar(myResponse);
+		int NumeroCasas = myResponse.getInt("numero_casas");
+		String token = myResponse.getString("token");
+		String cifrado = myResponse.getString("cifrado");
+		SaidaPopularJSON(NumeroCasas, token, cifrado, resposta);
+
+		// JSONObject myResponse2 = new JSONObject(resposta);
+		System.out.println(resposta);
+		// salvarArquivo(myResponse2);
+
+	}
+
+	private static void SaidaPopularJSON(int numeroCasas, String token, String cifrado, String resposta) throws JSONException {
+		
+		JSONObject my_obj = new JSONObject();
+		my_obj.put("numero_casas", numeroCasas);
+		my_obj.put("token", token);
+		my_obj.put("cifrado", cifrado);
+		my_obj.put("decifrado", resposta);
+		salvarArquivo(my_obj);
+		
+	}
+
+	private static void salvarArquivo(JSONObject myResponse) throws JSONException {
+
+		/* SALVAR ARQUIVO */
+		JSONObject myResult = new JSONObject(myResponse.toString());
+		FileWriter writeFile = null;
+
+		try {
+			writeFile = new FileWriter("saida.json");
+			// Escreve no arquivo conteudo do Objeto JSON
+			writeFile.write(myResult.toString());
+			writeFile.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+	}
+
+	private static String decifrar(JSONObject myResponse) throws JSONException {
+
+		Decifrar dc = new Decifrar();
+		String cifrado = myResponse.getString("cifrado");
+		int nroCasas = myResponse.getInt("numero_casas");
+		String resposta2 = dc.criptografar(cifrado, nroCasas);
+		// ftq bdanxqy iuft fdagnxqetaafuzs ue ftmf fdagnxq etaafe nmow. gzwzaiz mgftad
+
+		return resposta2;
+	}
 }
