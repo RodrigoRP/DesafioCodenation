@@ -30,10 +30,11 @@ public class Send_HTTP_Request2 {
 		// add request header
 		con.setRequestProperty("User-Agent", "Mozilla/5.0");
 
-		int responseCode = con.getResponseCode();
-		System.out.println("\nSending 'GET' request to URL : " + url);
-		System.out.println("Response Code : " + responseCode);
-
+		/*
+		 * int responseCode = con.getResponseCode();
+		 * System.out.println("\nSending 'GET' request to URL : " + url);
+		 * System.out.println("Response Code : " + responseCode);
+		 */
 		BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
 		String inputLine;
 		StringBuffer response = new StringBuffer();
@@ -43,7 +44,7 @@ public class Send_HTTP_Request2 {
 		}
 		in.close();
 		// print in String
-		System.out.println(response.toString());
+		//System.out.println(response.toString());
 		
 		// Read JSON response and print
 		JSONObject myResponse = new JSONObject(response.toString());
@@ -103,7 +104,7 @@ public class Send_HTTP_Request2 {
 		int nroCasas = myResponse.getInt("numero_casas");
 		System.out.println(cifrado);
 		System.out.println("");
-		String resposta2 = dc.criptografar(cifrado, nroCasas);
+		String resposta2 = dc.criptografar("a", 99);
 
 		return resposta2;
 	}
