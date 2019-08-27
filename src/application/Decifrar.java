@@ -4,7 +4,7 @@ public class Decifrar {
 
 	public String criptografar(String message, int nroCasas) {
 
-		StringBuilder sb2 = new StringBuilder();
+		StringBuilder sb = new StringBuilder();
 		char[] msg = message.toCharArray();
 		String newMessage = message.toLowerCase();
 
@@ -15,22 +15,21 @@ public class Decifrar {
 			boolean b1 = Character.isDigit(alpha);
 			int ascii = (int) alpha - nroCasas;
 
-			while (ascii < 97) {
+			while (ascii < 97 && b1 == false && alpha != ' ' && alpha !='.') {
 				ascii = ((ascii + 122) - 96);
 			}
 			beta = (char) (ascii);
 			if (b1)
-				sb2.insert(0, alpha);
+				sb.insert(0, alpha);
 			else if (alpha != ' ' && alpha != '.')
-				sb2.insert(0, beta);
-			else if (alpha == ' ')
-				sb2.insert(0, ' ');
-			else if (alpha == '.')
-				sb2.insert(0, '.');
-
+				sb.insert(0, beta);
+			else 
+				sb.insert(0, alpha);
+			
+				
 		}
 
-		return sb2.toString();
+		return sb.toString();
 	}
 
 }
